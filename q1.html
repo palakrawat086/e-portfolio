@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Palak Rawat | Academic Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: "#0D1117",
+            gold: "#FF9F00",
+          },
+          boxShadow: {
+            glow: "0 0 20px rgba(255,159,0,0.4)",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    .lift {
+      transition: all 0.3s ease;
+    }
+    .lift:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 20px rgba(255,159,0,0.4);
+    }
+  </style>
+</head>
+
+<body class="bg-navy text-gray-200 font-sans">
+
+<!-- ================= NAVBAR ================= -->
+<nav class="flex justify-between items-center px-8 py-5 border-b border-gray-700">
+  <h1 class="text-xl font-bold text-gold">Palak Rawat</h1>
+  <ul class="flex gap-6 text-sm">
+    <li><a href="#bio" class="hover:text-gold">Bio</a></li>
+    <li><a href="#learning" class="hover:text-gold">Daily Learning</a></li>
+    <li><a href="#assignments" class="hover:text-gold">Assignments</a></li>
+    <li><a href="#contact" class="hover:text-gold">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="text-center py-20 px-6">
+  <h2 class="text-4xl md:text-5xl font-bold mb-4">
+    Palak <span class="text-gold">Rawat</span>
+  </h2>
+  <p class="text-lg text-gray-400">
+    B.Tech Computer Science & Engineering<br>
+    Graphic Era Hill University, Dehradun
+  </p>
+
+  <div class="mt-8 flex justify-center gap-4">
+    <button onclick="saveToGitHub()" class="lift px-6 py-3 rounded-lg bg-gold text-black font-semibold">
+      Save Updates to GitHub
+    </button>
+    <a href="https://www.linkedin.com" target="_blank"
+       class="lift px-6 py-3 rounded-lg border border-gold text-gold">
+      LinkedIn
+    </a>
+  </div>
+</section>
+
+<!-- ================= BIO ================= -->
+<section id="bio" class="px-8 py-16 bg-[#0B0F14]">
+  <h3 class="text-3xl font-bold mb-6 text-gold">About Me</h3>
+
+  <div contenteditable="true"
+       class="lift p-6 bg-[#161B22] rounded-xl border border-gray-700 text-gray-300">
+    ✍️ Write your bio here...  
+    (Example: I am a B.Tech CSE student passionate about cybersecurity, networking,
+    and continuous learning. This portfolio documents my academic progress.)
+  </div>
+</section>
+
+<!-- ================= INTRO VIDEO ================= -->
+<section class="px-8 py-16">
+  <h3 class="text-3xl font-bold mb-6 text-gold">Intro Video</h3>
+
+  <input type="file" accept="video/*"
+         class="mb-4 text-sm"
+         onchange="loadVideo(event)">
+
+  <video id="introVideo" controls
+         class="hidden w-full max-w-2xl rounded-xl border border-gray-700"></video>
+</section>
+
+<!-- ================= DAILY LEARNING ================= -->
+<section id="learning" class="px-8 py-16 bg-[#0B0F14]">
+  <h3 class="text-3xl font-bold mb-8 text-gold">Daily Learning</h3>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <div contenteditable="true" class="lift p-6 bg-[#161B22] rounded-xl border border-gray-700">
+      <h4 class="font-semibold mb-2">Day 1</h4>
+      <p class="text-sm text-gray-400">Write today's class learning...</p>
+    </div>
+
+    <div contenteditable="true" class="lift p-6 bg-[#161B22] rounded-xl border border-gray-700">
+      <h4 class="font-semibold mb-2">Day 2</h4>
+      <p class="text-sm text-gray-400">Topics covered...</p>
+    </div>
+
+    <div contenteditable="true" class="lift p-6 bg-[#161B22] rounded-xl border border-gray-700">
+      <h4 class="font-semibold mb-2">Day 3</h4>
+      <p class="text-sm text-gray-400">Assignments / notes...</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ASSIGNMENTS ================= -->
+<section id="assignments" class="px-8 py-16">
+  <h3 class="text-3xl font-bold mb-6 text-gold">Assignments (PDF)</h3>
+
+  <input type="file" accept="application/pdf"
+         multiple
+         class="mb-6 text-sm"
+         onchange="addPDFs(event)">
+
+  <ul id="pdfList" class="space-y-4"></ul>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="px-8 py-16 bg-[#0B0F14]">
+  <h3 class="text-3xl font-bold mb-8 text-gold">Contact Me</h3>
+
+  <form action="https://api.web3forms.com/submit" method="POST"
+        class="max-w-xl space-y-4">
+    <input type="hidden" name="access_key" value="133f7f98-6633-4475-a60b-f62a307e42ea">
+
+    <input type="text" name="name" placeholder="Your Name"
+           class="w-full p-3 rounded bg-[#161B22] border border-gray-700">
+
+    <input type="email" name="email" placeholder="Your Email"
+           class="w-full p-3 rounded bg-[#161B22] border border-gray-700">
+
+    <textarea name="message" rows="4" placeholder="Message"
+              class="w-full p-3 rounded bg-[#161B22] border border-gray-700"></textarea>
+
+    <button class="lift w-full py-3 bg-gold text-black font-semibold rounded">
+      Send Message
+    </button>
+  </form>
+</section>
+
+<footer class="text-center py-6 text-sm text-gray-500">
+  © 2026 Palak Rawat | Academic Portfolio
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+function loadVideo(event) {
+  const video = document.getElementById("introVideo");
+  video.src = URL.createObjectURL(event.target.files[0]);
+  video.classList.remove("hidden");
+}
+
+function addPDFs(event) {
+  const list = document.getElementById("pdfList");
+  [...event.target.files].forEach(file => {
+    const li = document.createElement("li");
+    li.className = "lift p-4 bg-[#161B22] rounded-lg border border-gray-700";
+    li.innerHTML = `<a href="${URL.createObjectURL(file)}" target="_blank" class="text-gold">${file.name}</a>`;
+    list.appendChild(li);
+  });
+}
+
+async function saveToGitHub() {
+  const token = prompt("Enter GitHub Personal Access Token:");
+  if (!token) return;
+
+  const repo = prompt("Repo name (username/repo):");
+  const path = "index.html";
+
+  const content = btoa(unescape(encodeURIComponent(document.documentElement.outerHTML)));
+
+  const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+    headers: { Authorization: `token ${token}` }
+  });
+
+  const data = await res.json();
+
+  await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `token ${token}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: "Update academic portfolio",
+      content: content,
+      sha: data.sha
+    })
+  });
+
+  alert("Portfolio updated successfully!");
+}
+</script>
+
+</body>
+</html>
