@@ -1,220 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Palak Rawat | Academic Portfolio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Palak Rawat | Portfolio</title>
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy: "#0D1117",
-            gold: "#FF9F00",
-          },
-          boxShadow: {
-            glow: "0 0 20px rgba(255,159,0,0.4)",
-          },
-        },
-      },
-    };
-  </script>
+<style>
+:root{
+  --bg:#0D1117;
+  --accent:#FF9F00;
+  --glass:rgba(255,255,255,0.05);
+  --border:rgba(255,159,0,0.25);
+}
 
-  <style>
-    .lift {
-      transition: all 0.3s ease;
-    }
-    .lift:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 20px rgba(255,159,0,0.4);
-    }
-  </style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  font-family:'Inter',sans-serif;
+  color:#fff;
+  scroll-behavior:smooth;
+  overflow-x:hidden;
+}
+
+h1,h2,h3{
+  font-family:'Playfair Display',serif;
+  position:relative;
+}
+
+/* Animated underline */
+h2::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-10px;
+  width:60px;
+  height:3px;
+  background:var(--accent);
+  transition:.4s;
+}
+h2:hover::after{width:120px;}
+
+section{
+  padding:100px 8%;
+  opacity:0;
+  transform:translateY(40px);
+  transition:all .8s ease;
+}
+section.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* HERO */
+.hero{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  background:linear-gradient(-45deg,#0D1117,#141c2b,#0D1117,#1a2235);
+  background-size:400% 400%;
+  animation:gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.hero h1{
+  font-size:3.2rem;
+  animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
+.typing{
+  margin-top:15px;
+  font-size:1.3rem;
+  color:var(--accent);
+  border-right:2px solid var(--accent);
+  white-space:nowrap;
+  overflow:hidden;
+}
+
+/* GLASS */
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:25px;
+  transition:.4s;
+  position:relative;
+}
+.glass::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:24px;
+  background:linear-gradient(45deg,transparent,rgba(255,159,0,0.08));
+  opacity:0;
+  transition:.4s;
+}
+.glass:hover::before{opacity:1;}
+
+.glass:hover{
+  transform:translateY(-12px);
+  box-shadow:0 20px 50px rgba(255,159,0,0.18);
+}
+
+/* DAILY */
+.bento{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+
+.card{min-height:180px; outline:none;}
+.card:empty:before{
+  content:"Write what you learned today...";
+  color:rgba(255,255,255,0.4);
+}
+
+.add-card{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:2.8rem;
+  color:var(--accent);
+  cursor:pointer;
+  border:2px dashed var(--border);
+}
+.add-card:hover{
+  background:rgba(255,159,0,0.08);
+}
+
+/* PROJECTS */
+.projects{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:30px;
+}
+
+/* GALLERY */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+}
+
+.gallery-item{
+  position:relative;
+  overflow:hidden;
+  border-radius:20px;
+}
+
+.gallery-item img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:20px;
+  transition:.5s;
+}
+.gallery-item:hover img{
+  transform:scale(1.1);
+}
+
+/* Lightbox */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  visibility:hidden;
+  transition:.4s;
+}
+.lightbox img{
+  max-width:80%;
+  max-height:80%;
+  border-radius:20px;
+}
+.lightbox.show{
+  opacity:1;
+  visibility:visible;
+}
+
+/* BUTTON */
+.btn{
+  margin-top:30px;
+  background:var(--accent);
+  border:none;
+  padding:12px 22px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.3s;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 rgba(255,159,0,0.4);}
+  50%{box-shadow:0 0 20px rgba(255,159,0,0.6);}
+}
+.btn:hover{transform:scale(1.05);}
+
+form input, form textarea{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:#fff;
+}
+
+footer{
+  text-align:center;
+  padding:40px;
+  border-top:1px solid var(--border);
+}
+footer a{
+  color:var(--accent);
+  text-decoration:none;
+  margin:0 10px;
+}
+</style>
 </head>
+<body>
 
-<body class="bg-navy text-gray-200 font-sans">
+<section class="hero">
+  <h1>Palak Rawat</h1>
+  <div class="typing" id="typing"></div>
+</section>
 
-<!-- ================= NAVBAR ================= -->
-<nav class="flex justify-between items-center px-8 py-5 border-b border-gray-700">
-  <h1 class="text-xl font-bold text-gold">Palak Rawat</h1>
-  <ul class="flex gap-6 text-sm">
-    <li><a href="#bio" class="hover:text-gold">Bio</a></li>
-    <li><a href="#learning" class="hover:text-gold">Daily Learning</a></li>
-    <li><a href="#assignments" class="hover:text-gold">Assignments</a></li>
-    <li><a href="#contact" class="hover:text-gold">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- ================= HERO ================= -->
-<section class="text-center py-20 px-6">
-  <h2 class="text-4xl md:text-5xl font-bold mb-4">
-    Palak <span class="text-gold">Rawat</span>
-  </h2>
-  <p class="text-lg text-gray-400">
-    B.Tech Computer Science & Engineering<br>
-    Graphic Era Hill University, Dehradun
-  </p>
-
-  <div class="mt-8 flex justify-center gap-4">
-    <button onclick="saveToGitHub()" class="lift px-6 py-3 rounded-lg bg-gold text-black font-semibold">
-      Save Updates to GitHub
-    </button>
-    <a href="https://www.linkedin.com" target="_blank"
-       class="lift px-6 py-3 rounded-lg border border-gold text-gold">
-      LinkedIn
-    </a>
+<section>
+  <h2>Daily Learning</h2><br>
+  <div class="bento" id="learningGrid">
+    <div class="glass card add-card" id="addBtn">+</div>
   </div>
 </section>
 
-<!-- ================= BIO ================= -->
-<section id="bio" class="px-8 py-16 bg-[#0B0F14]">
-  <h3 class="text-3xl font-bold mb-6 text-gold">About Me</h3>
-
-  <div contenteditable="true"
-       class="lift p-6 bg-[#161B22] rounded-xl border border-gray-700 text-gray-300">
-    ✍️ Write your bio here...  
-    (Example: I am a B.Tech CSE student passionate about cybersecurity, networking,
-    and continuous learning. This portfolio documents my academic progress.)
-  </div>
+<section>
+  <h2>Gallery</h2><br>
+  <input type="file" id="imageUpload" class="btn" accept="image/*">
+  <div class="gallery-grid" id="galleryGrid"></div>
 </section>
 
-<!-- ================= INTRO VIDEO ================= -->
-<section class="px-8 py-16">
-  <h3 class="text-3xl font-bold mb-6 text-gold">Intro Video</h3>
-
-  <input type="file" accept="video/*"
-         class="mb-4 text-sm"
-         onchange="loadVideo(event)">
-
-  <video id="introVideo" controls
-         class="hidden w-full max-w-2xl rounded-xl border border-gray-700"></video>
-</section>
-
-<!-- ================= DAILY LEARNING ================= -->
-<section id="learning" class="px-8 py-16 bg-[#0B0F14]">
-  <h3 class="text-3xl font-bold mb-8 text-gold">Daily Learning</h3>
-
-  <div class="grid md:grid-cols-3 gap-6">
-    <div contenteditable="true" class="lift p-6 bg-[#161B22] rounded-xl border border-gray-700">
-      <h4 class="font-semibold mb-2">Day 1</h4>
-      <p class="text-sm text-gray-400">Write today's class learning...</p>
-    </div>
-
-    <div contenteditable="true" class="lift p-6 bg-[#161B22] rounded-xl border border-gray-700">
-      <h4 class="font-semibold mb-2">Day 2</h4>
-      <p class="text-sm text-gray-400">Topics covered...</p>
-    </div>
-
-    <div contenteditable="true" class="lift p-6 bg-[#161B22] rounded-xl border border-gray-700">
-      <h4 class="font-semibold mb-2">Day 3</h4>
-      <p class="text-sm text-gray-400">Assignments / notes...</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= ASSIGNMENTS ================= -->
-<section id="assignments" class="px-8 py-16">
-  <h3 class="text-3xl font-bold mb-6 text-gold">Assignments (PDF)</h3>
-
-  <input type="file" accept="application/pdf"
-         multiple
-         class="mb-6 text-sm"
-         onchange="addPDFs(event)">
-
-  <ul class="space-y-4">
-
-  <li class="lift p-4 bg-[#161B22] rounded-lg border border-gray-700">
-    <a href="assignments/assignment1.pdf" target="_blank" class="text-gold">
-      Assignment 1 –Profiling sheet(Name-Palak Rawat-sec-Cs1-Roll no-26).pdf
-    </a>
-  </li>
-
-</ul>
-
-</section>
-
-<!-- ================= CONTACT ================= -->
-<section id="contact" class="px-8 py-16 bg-[#0B0F14]">
-  <h3 class="text-3xl font-bold mb-8 text-gold">Contact Me</h3>
-
-  <form action="https://api.web3forms.com/submit" method="POST"
-        class="max-w-xl space-y-4">
+<section>
+  <h2>Contact Me</h2>
+  <form action="https://api.web3forms.com/submit" method="POST">
     <input type="hidden" name="access_key" value="133f7f98-6633-4475-a60b-f62a307e42ea">
-
-    <input type="text" name="name" placeholder="Your Name"
-           class="w-full p-3 rounded bg-[#161B22] border border-gray-700">
-
-    <input type="email" name="email" placeholder="Your Email"
-           class="w-full p-3 rounded bg-[#161B22] border border-gray-700">
-
-    <textarea name="message" rows="4" placeholder="Message"
-              class="w-full p-3 rounded bg-[#161B22] border border-gray-700"></textarea>
-
-    <button class="lift w-full py-3 bg-gold text-black font-semibold rounded">
-      Send Message
-    </button>
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="email" placeholder="Your Email" required>
+    <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+    <button type="submit" class="btn">Send Message</button>
   </form>
 </section>
 
-<footer class="text-center py-6 text-sm text-gray-500">
-  © 2026 Palak Rawat | Academic Portfolio
+<div class="lightbox" id="lightbox"><img src=""></div>
+
+<footer>
+  © 2026 Palak Rawat |
+  <a href="mailto:rawatpalak244@gmail.com">Email</a>
 </footer>
 
-<!-- ================= SCRIPTS ================= -->
 <script>
-function loadVideo(event) {
-  const video = document.getElementById("introVideo");
-  video.src = URL.createObjectURL(event.target.files[0]);
-  video.classList.remove("hidden");
+// Typing Animation
+const text="B.Tech CSE Student | GEHU Dehradun";
+let i=0;
+function type(){
+  if(i<text.length){
+    document.getElementById("typing").innerHTML+=text.charAt(i);
+    i++;
+    setTimeout(type,60);
+  }
 }
+type();
 
-function addPDFs(event) {
-  const list = document.getElementById("pdfList");
-  [...event.target.files].forEach(file => {
-    const li = document.createElement("li");
-    li.className = "lift p-4 bg-[#161B22] rounded-lg border border-gray-700";
-    li.innerHTML = `<a href="${URL.createObjectURL(file)}" target="_blank" class="text-gold">${file.name}</a>`;
-    list.appendChild(li);
+// Scroll Animation
+const sections=document.querySelectorAll("section");
+window.addEventListener("scroll",()=>{
+  sections.forEach(sec=>{
+    if(sec.getBoundingClientRect().top<window.innerHeight-100){
+      sec.classList.add("show");
+    }
   });
-}
+});
 
-async function saveToGitHub() {
-  const token = prompt("Enter GitHub Personal Access Token:");
-  if (!token) return;
+// Gallery + Lightbox
+const upload=document.getElementById("imageUpload");
+const gallery=document.getElementById("galleryGrid");
+const lightbox=document.getElementById("lightbox");
 
-  const repo = prompt("Repo name (username/repo):");
-  const path = "index.html";
+upload.addEventListener("change",()=>{
+  const file=upload.files[0];
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const div=document.createElement("div");
+    div.className="gallery-item glass";
+    const img=document.createElement("img");
+    img.src=e.target.result;
+    img.onclick=()=>{lightbox.classList.add("show"); lightbox.querySelector("img").src=img.src;}
+    div.appendChild(img);
+    gallery.appendChild(div);
+  };
+  reader.readAsDataURL(file);
+});
 
-  const content = btoa(unescape(encodeURIComponent(document.documentElement.outerHTML)));
-
-  const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-    headers: { Authorization: `token ${token}` }
-  });
-
-  const data = await res.json();
-
-  await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `token ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: "Update academic portfolio",
-      content: content,
-      sha: data.sha
-    })
-  });
-
-  alert("Portfolio updated successfully!");
-}
+lightbox.onclick=()=>lightbox.classList.remove("show");
 </script>
 
 </body>
 </html>
-
-
-
