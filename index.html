@@ -210,20 +210,19 @@ input, textarea{
 <!-- ASSIGNMENTS -->
 <section>
   <h2>Assignments</h2><br>
+
   <div class="assignments-grid" id="assignmentsGrid"></div>
+
   <br>
+
   <div class="glass" style="max-width:500px;">
     <input type="text" id="assignTitle" placeholder="Assignment Title">
     <input type="text" id="assignSubject" placeholder="Subject">
-    <input type="text" id="assignLink" placeholder="PDF Link">
+    <input type="file" id="assignFile" accept=".pdf,.doc,.docx">
     <textarea id="assignDesc" placeholder="Description"></textarea>
     <button class="btn" id="addAssignmentBtn">Add Assignment</button>
   </div>
 </section>
-
-<footer style="text-align:center;padding:40px;">
-  © 2026 Palak Rawat
-</footer>
 
 <!-- FIREBASE -->
 <script type="module">
@@ -289,31 +288,60 @@ onSnapshot(collection(db,"gallery"),snapshot=>{
   });
 });
 
-/* ASSIGNMENTS */
-const assignmentsGrid=document.getElementById("assignmentsGrid");
-document.getElementById("addAssignmentBtn").addEventListener("click",async ()=>{
-  const title=document.getElementById("assignTitle").value;
-  if(!title)return alert("Title required");
-  await addDoc(collection(db,"assignments"),{
-    title,
-    subject:document.getElementById("assignSubject").value,
-    link:document.getElementById("assignLink").value,
-    desc:document.getElementById("assignDesc").value
-  });
+/* ASSIGNMENTS WITH FILE UPLOAD */
+const assignmentsGrid = document.getElementById("assignmentsGrid");
+const addAssignmentBtn = document.getElementById("addAssignmentBtn");
+
+addAssignmentBtn.addEventListener("click", async () => {
+
+  const title = document.getElementById("assignTitle").value;
+  const subject = document.getElementById("assignSubject").value;
+  const desc = document.getElementById("assignDesc").value;
+  const file = document.getElementById("assignFile").files[0];
+
+  if (!title) return alert("Title required");
+  if (!file) return alert("Please choose a file");
+
+  const reader = new FileReader();
+
+  reader.onload = async function(e){
+    await addDoc(collection(db, "assignments"), {
+      title,
+      subject,
+      desc,
+      fileName: file.name,
+      fileData: e.target.result,
+      created: new Date()
+    });
+  };
+
+  reader.readAsDataURL(file);
+
+  document.getElementById("assignTitle").value="";
+  document.getElementById("assignSubject").value="";
+  document.getElementById("assignDesc").value="";
+  document.getElementById("assignFile").value="";
 });
 
-onSnapshot(collection(db,"assignments"),snapshot=>{
+onSnapshot(collection(db,"assignments"), snapshot=>{
   assignmentsGrid.innerHTML="";
+
   snapshot.forEach(docSnap=>{
-    const d=docSnap.data();
-    const card=document.createElement("div");
+    const d = docSnap.data();
+
+    const card = document.createElement("div");
     card.className="glass assignment-card";
-    card.innerHTML=`
+
+    card.innerHTML = `
       <h3>${d.title}</h3>
-      <p><strong>${d.subject||""}</strong></p>
-      <p>${d.desc||""}</p>
-      ${d.link?`<a href="${d.link}" target="_blank">View →</a>`:""}
+      <p><strong>${d.subject || ""}</strong></p>
+      <p>${d.desc || ""}</p>
+      <br>
+      <a href="${d.fileData}" download="${d.fileName}" class="btn">
+        Download File
+      </a>
     `;
+
     assignmentsGrid.appendChild(card);
   });
 });
@@ -333,3 +361,4 @@ type();
 
 </body>
 </html>
+
