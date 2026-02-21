@@ -319,6 +319,93 @@ upload.addEventListener("change",()=>{
 
 lightbox.onclick=()=>lightbox.classList.remove("show");
 </script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, updateDoc, doc } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCphibZuQPQeoFbR1Y7IuE3AoELtclyb4c",
+  authDomain: "eportfolio-34489.firebaseapp.com",
+  projectId: "eportfolio-34489",
+  storageBucket: "eportfolio-34489.firebasestorage.app",
+  messagingSenderId: "1051985668357",
+  appId: "1:1051985668357:web:8ea2c8b444acd8c435af6c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* DAILY LOGS */
+const learningGrid = document.getElementById("learningGrid");
+const addBtn = document.getElementById("addBtn");
+
+addBtn.addEventListener("click", async () => {
+  await addDoc(collection(db, "dailyLogs"), {
+    content: "",
+    created: new Date()
+  });
+});
+
+onSnapshot(collection(db, "dailyLogs"), (snapshot) => {
+  learningGrid.innerHTML = `<div class="glass card add-card" id="addBtn">+</div>`;
+
+  snapshot.forEach((docSnap) => {
+    const card = document.createElement("div");
+    card.className = "glass card";
+    card.contentEditable = true;
+    card.innerHTML = docSnap.data().content;
+
+    card.addEventListener("input", async () => {
+      await updateDoc(doc(db, "dailyLogs", docSnap.id), {
+        content: card.innerHTML
+      });
+    });
+
+    learningGrid.insertBefore(card, learningGrid.firstChild);
+  });
+
+  document.getElementById("addBtn").addEventListener("click", async () => {
+    await addDoc(collection(db, "dailyLogs"), {
+      content: "",
+      created: new Date()
+    });
+  });
+});
+
+/* GALLERY (Base64 in Firestore) */
+const upload = document.getElementById("imageUpload");
+const gallery = document.getElementById("galleryGrid");
+
+upload.addEventListener("change", async () => {
+  const file = upload.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    await addDoc(collection(db, "gallery"), {
+      imageBase64: e.target.result,
+      created: new Date()
+    });
+  };
+  reader.readAsDataURL(file);
+});
+
+onSnapshot(collection(db, "gallery"), (snapshot) => {
+  gallery.innerHTML = "";
+  snapshot.forEach((docSnap) => {
+    const div = document.createElement("div");
+    div.className = "gallery-item glass";
+
+    const img = document.createElement("img");
+    img.src = docSnap.data().imageBase64;
+
+    div.appendChild(img);
+    gallery.appendChild(div);
+  });
+});
+</script>
 
 </body>
 </html>
+
